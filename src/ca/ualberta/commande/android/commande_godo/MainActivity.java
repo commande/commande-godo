@@ -2,17 +2,20 @@ package ca.ualberta.commande.android.commande_godo;
 
 import java.util.List;
 
-import android.app.Activity;
+import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import ca.ualberta.commande.android.commande_godo.data.TodoItem;
 import ca.ualberta.commande.android.commande_godo.data.TodosDataSource;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ListActivity {
 	
+	private static final int REQUEST_CODE = 100;
 	private TodosDataSource datasource;
 
     @Override
@@ -20,9 +23,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        // get the todos from the datasource
         datasource = new TodosDataSource(this);
         List<TodoItem> todos = datasource.findAll();
         
+		TodoAdapter adapter = new TodoAdapter(
+				this, R.layout.item_todo, todos);
+		setListAdapter(adapter);
+        
+        // write the todos to the datasource
         try {
         	datasource.writeTodos(todos);
 		} catch (Exception e) {
@@ -53,4 +62,20 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    public void showNewTodoActivity(View v) {
+		Intent intent = new Intent(this, NewTodoActivity.class);
+		startActivityForResult(intent, REQUEST_CODE);
+	}
+    
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		// Respond to return from new todo creation
+		if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+			
+			// Get new todo item information and add to todolist.
+		}
+	}
 }

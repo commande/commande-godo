@@ -4,5 +4,9 @@
     <string name="app_name">commande-GoDo</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="new_todo">New</string>
+    <string name="save_todo">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="new_todo_hint">Enter a title for your new todo...</string>
 
 </resources>
