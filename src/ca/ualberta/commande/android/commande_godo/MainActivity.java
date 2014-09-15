@@ -1,5 +1,6 @@
 package ca.ualberta.commande.android.commande_godo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -17,6 +18,8 @@ public class MainActivity extends ListActivity {
 	
 	private static final int REQUEST_CODE = 100;
 	private TodosDataSource datasource;
+	private TodoAdapter adapter;
+	private List<TodoItem> todos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +28,20 @@ public class MainActivity extends ListActivity {
         
         // get the todos from the datasource.
         datasource = new TodosDataSource(this);
-        List<TodoItem> todos = datasource.findAll();
         
-		TodoAdapter adapter = new TodoAdapter(
-				this, R.layout.item_todo, todos);
+        // load todolist from disk, otherwise instantiate empty list
+        try {
+        	todos = datasource.loadTodos();
+		} catch (Exception e) {
+			// TODO: handle exception
+			Log.i("TODOS", e.getMessage());
+			todos = datasource.getEmptyList();
+		}
+        
+        //filter todos user is interested in seeing
+        
+        // Display the todos to the user
+		adapter = new TodoAdapter(this, R.layout.item_todo, todos);
 		setListAdapter(adapter);
         
         // write the todos to the datasource
@@ -36,10 +49,10 @@ public class MainActivity extends ListActivity {
         	datasource.writeTodos(todos);
 		} catch (Exception e) {
 			// TODO: handle exception
+			Log.i("TODOS", e.getMessage());
 		}
         
-        TodoItem todo = todos.get(0);
-        Log.i("TODOS", todo.getKey());
+        Log.i("TODOS", "Here");
         
     }
 
@@ -76,6 +89,22 @@ public class MainActivity extends ListActivity {
 		if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
 			
 			// Get new todo item information and add to todolist.
+			String todoTitle = data.getStringExtra("todoTitle");
+			TodoItem newTodo = TodoItem.getNew(todoTitle);
+			addAndSaveNewTodo(newTodo);
 		}
+	}
+
+	private void addAndSaveNewTodo(TodoItem newTodo) {
+		todos.add(newTodo);
+		
+		// Save Todolist on disk
+		try {
+			datasource.writeTodos(todos);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		adapter.notifyDataSetChanged();
 	}
 }

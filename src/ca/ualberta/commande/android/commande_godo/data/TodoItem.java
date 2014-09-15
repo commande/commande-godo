@@ -53,4 +53,14 @@ public class TodoItem {
 		todo.setArchived(false);
 		return todo;
 	}
+	
+	public static TodoItem getNew(String key, String title, boolean completed, boolean archived) {
+		// return a created todo with initial data
+		TodoItem todo = new TodoItem();
+		todo.setKey(key);
+		todo.setTitle(title);
+		todo.setCompleted(completed);
+		todo.setArchived(archived);
+		return todo;
+	}
 }
