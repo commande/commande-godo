@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brettcommandeur.android.godo.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/bottom_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bottom_action_bar_color" >
+        
+		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/archive_button"
+            android:padding="10dp"
+            android:text="@string/email_todos"
+            android:textColor="#FFFFFF" 
+            android:clickable="true"
+            android:onClick="emailSelectedTodos"/>
+        <TextView
+            android:id="@+id/archive_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/delete_button"
+            android:padding="10dp"
+            android:text="@string/archive_todos"
+            android:textColor="#FFFFFF" 
+            android:clickable="true"
+            android:onClick="archiveSelectedTodos"/>
+        <TextView
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:text="@string/delete_todos"
+            android:textColor="#FFFFFF" 
+            android:clickable="true"
+            android:onClick="deleteSelectedTodos"/>
+        <TextView
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="10dp"
+            android:text="@string/cancel_select"
+            android:textColor="#FFFFFF" 
+            android:clickable="true"
+            android:onClick="cancelSelect"/>
+        <TextView
+            android:id="@+id/all_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/cancel_button"
+            android:padding="10dp"
+            android:text="@string/select_all"
+            android:textColor="#FFFFFF" 
+            android:clickable="true"
+            android:onClick="selectAllTodos"/>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_action_bar"
+        android:layout_alignParentTop="true"
+        android:background="@color/light_background" >
+
+    </ListView>
+
+</RelativeLayout>

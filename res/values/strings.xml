@@ -5,8 +5,15 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="new_todo">New</string>
+    <string name="select_todos">Select</string>
     <string name="save_todo">Save</string>
     <string name="cancel">Cancel</string>
     <string name="new_todo_hint">Enter a title for your new todo...</string>
+    <string name="email_todos">Email</string>
+    <string name="archive_todos">Archive</string>
+    <string name="delete_todos">Delete</string>
+    <string name="cancel_select">Cancel</string>
+    <string name="select_all">All</string>
+    
 
 </resources>

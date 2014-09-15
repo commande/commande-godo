@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewTodoActivity" />
+        <activity android:name=".SelectTodoActivity" />
     </application>
 
 </manifest>

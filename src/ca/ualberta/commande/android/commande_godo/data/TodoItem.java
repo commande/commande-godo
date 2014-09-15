@@ -8,8 +8,9 @@ import java.util.Locale;
 public class TodoItem {
 	private String key;
 	private String title;
-	private boolean completed;
-	private boolean archived;
+	private boolean completed = false;
+	private boolean archived = false;
+	private boolean selected = false;
 	public String getKey() {
 		return key;
 	}
@@ -41,6 +42,12 @@ public class TodoItem {
 	public void setArchived(boolean archived) {
 		this.archived = archived;
 	}
+	public boolean isSelected() {
+		return selected;
+	}
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 	
 	@SuppressLint("SimpleDateFormat")
 	public static TodoItem getNew(String title) {
@@ -56,8 +63,6 @@ public class TodoItem {
 		TodoItem todo = new TodoItem();
 		todo.setKey(key);
 		todo.setTitle(title);
-		todo.setCompleted(false);
-		todo.setArchived(false);
 		return todo;
 	}
 	

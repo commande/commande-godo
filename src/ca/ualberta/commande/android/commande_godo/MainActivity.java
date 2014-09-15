@@ -16,7 +16,8 @@ import ca.ualberta.commande.android.commande_godo.data.TodosDataSource;
 
 public class MainActivity extends ListActivity {
 	
-	private static final int REQUEST_CODE = 100;
+	private static final int NEW_TODO_REQUEST_CODE = 100;
+	private static final int SELECT_TODO_REQUEST_CODE = 200;
 	private static final int DISPLAY_ACTIVE = 1;
 	private static final int DISPLAY_ARCHIVED = 2;
 	private static final int DISPLAY_ALL = 3;
@@ -89,15 +90,20 @@ public class MainActivity extends ListActivity {
     
     public void showNewTodoActivity(View v) {
 		Intent intent = new Intent(this, NewTodoActivity.class);
-		startActivityForResult(intent, REQUEST_CODE);
+		startActivityForResult(intent, NEW_TODO_REQUEST_CODE);
 	}
+    
+    public void showSelectTodoActivity(View v) {
+    	Intent intent = new Intent (this, SelectTodoActivity.class);
+    	startActivityForResult(intent, SELECT_TODO_REQUEST_CODE);
+    }
     
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		// Respond to return from new todo creation
-		if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+		if (requestCode == NEW_TODO_REQUEST_CODE && resultCode == RESULT_OK) {
 			
 			// Get new todo item information and add to todolist.
 			String todoTitle = data.getStringExtra("todoTitle");
