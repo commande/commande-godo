@@ -28,6 +28,13 @@ public class TodoItem {
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
+	public void toggleCompleted() {
+		if (this.completed) {
+			this.setCompleted(false);
+		} else {
+			this.setCompleted(true);
+		}
+	}
 	public boolean isArchived() {
 		return archived;
 	}

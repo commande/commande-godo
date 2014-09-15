@@ -63,6 +63,9 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
 					ctv.setTextColor(Color.LTGRAY);
 					// http://stackoverflow.com/questions/9786544/creating-a-strikethrough-text-in-android, Sept 13, 2014
 					ctv.setPaintFlags(ctv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+				} else {
+					ctv.setTextColor(Color.BLACK);
+					ctv.setPaintFlags(ctv.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
 				}
 			}
 		}

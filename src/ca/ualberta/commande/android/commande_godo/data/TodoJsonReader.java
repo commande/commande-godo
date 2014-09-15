@@ -47,7 +47,7 @@ public class TodoJsonReader {
 			} else if (name.equals("completed")) {
 				completed = reader.nextBoolean();
 			} else if (name.equals("archived")) {
-				completed = reader.nextBoolean();
+				archived = reader.nextBoolean();
 			} else {
 				reader.skipValue();
 			}

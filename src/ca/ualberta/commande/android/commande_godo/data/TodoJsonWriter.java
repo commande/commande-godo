@@ -27,6 +27,7 @@ public class TodoJsonWriter {
 
 	public static void writeTodo(JsonWriter writer, TodoItem todo) throws IOException {
 		writer.beginObject();
+		writer.name("key").value(todo.getKey());
 		writer.name("title").value(todo.getTitle());
 		writer.name("completed").value(todo.isCompleted());
 		writer.name("archived").value(todo.isArchived());

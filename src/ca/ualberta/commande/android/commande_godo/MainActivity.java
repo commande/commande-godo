@@ -1,6 +1,5 @@
 package ca.ualberta.commande.android.commande_godo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -10,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import ca.ualberta.commande.android.commande_godo.data.TodoItem;
 import ca.ualberta.commande.android.commande_godo.data.TodosDataSource;
 
@@ -17,9 +17,13 @@ import ca.ualberta.commande.android.commande_godo.data.TodosDataSource;
 public class MainActivity extends ListActivity {
 	
 	private static final int REQUEST_CODE = 100;
+	private static final int DISPLAY_ACTIVE = 1;
+	private static final int DISPLAY_ARCHIVED = 2;
+	private static final int DISPLAY_ALL = 3;
+	
 	private TodosDataSource datasource;
 	private TodoAdapter adapter;
-	private List<TodoItem> todos;
+	private List<TodoItem> displayTodos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,33 +33,40 @@ public class MainActivity extends ListActivity {
         // get the todos from the datasource.
         datasource = new TodosDataSource(this);
         
-        // load todolist from disk, otherwise instantiate empty list
-        try {
-        	todos = datasource.loadTodos();
-		} catch (Exception e) {
-			// TODO: handle exception
-			Log.i("TODOS", e.getMessage());
-			todos = datasource.getEmptyList();
-		}
-        
-        //filter todos user is interested in seeing
+        //filter todos user is interested in seeing as selected from menu options
+        displayTodos = getDisplayTodos(DISPLAY_ALL);
         
         // Display the todos to the user
-		adapter = new TodoAdapter(this, R.layout.item_todo, todos);
+		adapter = new TodoAdapter(this, R.layout.item_todo, displayTodos);
 		setListAdapter(adapter);
         
-        // write the todos to the datasource
-        try {
-        	datasource.writeTodos(todos);
-		} catch (Exception e) {
-			// TODO: handle exception
-			Log.i("TODOS", e.getMessage());
-		}
-        
-        Log.i("TODOS", "Here");
-        
     }
+    
+    public List<TodoItem> getDisplayTodos(int displayMode) {
+    	List<TodoItem> displayTodos = null;
+    	
+    	switch (displayMode) {
+		case DISPLAY_ACTIVE:
+			for (TodoItem todo : datasource.todos) {
+				if (!todo.isArchived()) {
+					displayTodos.add(todo);
+				}
+			}
+			return displayTodos;
+			
+		case DISPLAY_ARCHIVED:
+			for (TodoItem todo : datasource.todos) {
+				if (todo.isArchived()) {
+					displayTodos.add(todo);
+				}
+			}
+			return displayTodos;
 
+		default:
+			return datasource.todos;
+		}
+    	
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,20 +102,30 @@ public class MainActivity extends ListActivity {
 			// Get new todo item information and add to todolist.
 			String todoTitle = data.getStringExtra("todoTitle");
 			TodoItem newTodo = TodoItem.getNew(todoTitle);
-			addAndSaveNewTodo(newTodo);
+			
+			// Save new todo to disk and update the view
+			
+			datasource.todos.add(newTodo);
+			datasource.saveTodos();
+			
+			// Update the view
+			displayTodos = getDisplayTodos(DISPLAY_ALL);
+			adapter.notifyDataSetChanged();
 		}
 	}
-
-	private void addAndSaveNewTodo(TodoItem newTodo) {
-		todos.add(newTodo);
-		
-		// Save Todolist on disk
-		try {
-			datasource.writeTodos(todos);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		adapter.notifyDataSetChanged();
-	}
+    
+    @Override
+    protected void onListItemClick(ListView l, View v, int pos, long id) {
+    	super.onListItemClick(l, v, pos, id);
+    		// When user clicks a todo, toggle its completed status
+    		// first get the todo that was clicked and toggle the completed status
+    		TodoItem updatedTodo = displayTodos.get(pos);
+    		updatedTodo.toggleCompleted();
+    		
+    		// save the changes on disk and memory
+    		datasource.update(updatedTodo);
+    		
+    		// update the view
+    		adapter.notifyDataSetChanged();
+    }
 }
