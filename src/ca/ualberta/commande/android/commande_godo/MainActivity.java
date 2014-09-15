@@ -23,7 +23,7 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // get the todos from the datasource
+        // get the todos from the datasource.
         datasource = new TodosDataSource(this);
         List<TodoItem> todos = datasource.findAll();
         
