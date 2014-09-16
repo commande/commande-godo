@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +23,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewTodoActivity" />
-        <activity android:name=".SelectTodoActivity" />
     </application>
 
 </manifest>

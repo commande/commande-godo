@@ -48,6 +48,13 @@ public class TodoItem {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
+	public void toggleSelected() {
+		if (this.selected) {
+			this.setSelected(false);
+		} else {
+			this.setSelected(true);
+		}
+	}
 	
 	@SuppressLint("SimpleDateFormat")
 	public static TodoItem getNew(String title) {

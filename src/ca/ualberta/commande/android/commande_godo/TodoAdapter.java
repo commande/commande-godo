@@ -16,15 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
+import ca.ualberta.commande.android.commande_godo.R.color;
 import ca.ualberta.commande.android.commande_godo.data.TodoItem;
 
 public class TodoAdapter extends ArrayAdapter<TodoItem> {
 
 	private List<TodoItem> objects;
+	private Context context;
 	
 	public TodoAdapter(Context context, int textViewResourceId, List<TodoItem> todos) {
 		super(context, textViewResourceId, todos);
 		this.objects = todos;
+		this.context = context;
 	}
 	
 	public View getView(int position, View convertView, ViewGroup parent){
@@ -59,14 +62,24 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
 				ctv.setText(todo.getTitle());
 				ctv.setChecked(todo.isCompleted());
 				
-				if (todo.isCompleted()) {
+				if (todo.isCompleted() && !todo.isSelected()) {
 					ctv.setTextColor(Color.LTGRAY);
+					ctv.setBackgroundColor(Color.WHITE);
 					// http://stackoverflow.com/questions/9786544/creating-a-strikethrough-text-in-android, Sept 13, 2014
 					ctv.setPaintFlags(ctv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+				} else if (todo.isCompleted() && todo.isSelected()) {
+					ctv.setTextColor(Color.WHITE);
+					ctv.setBackgroundColor(context.getResources().getColor(R.color.highlight));
+					ctv.setPaintFlags(ctv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+				} else if (!todo.isCompleted() && todo.isSelected()) {
+					ctv.setTextColor(Color.BLACK);
+					ctv.setBackgroundColor(context.getResources().getColor(R.color.highlight));
+					ctv.setPaintFlags(ctv.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
 				} else {
 					ctv.setTextColor(Color.BLACK);
+					ctv.setBackgroundColor(Color.WHITE);
 					ctv.setPaintFlags(ctv.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-				}
+				}		
 			}
 		}
 

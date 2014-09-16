@@ -12,6 +12,7 @@ public final class R {
     }
     public static final class color {
         public static final int bottom_action_bar_color=0x7f040001;
+        public static final int highlight=0x7f040003;
         public static final int light_background=0x7f040002;
         public static final int white=0x7f040000;
     }
@@ -30,18 +31,19 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f090006;
-        public static final int all_button=0x7f090005;
-        public static final int archive_button=0x7f090002;
+        public static final int action_settings=0x7f090007;
+        public static final int all_button=0x7f090006;
+        public static final int archive_button=0x7f090003;
         public static final int bottom_action_bar=0x7f090000;
-        public static final int cancel_button=0x7f090004;
-        public static final int delete_button=0x7f090003;
+        public static final int cancel_button=0x7f090005;
+        public static final int delete_button=0x7f090004;
         public static final int editText1=0x7f090001;
+        public static final int select_action_bar=0x7f090002;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_newtodo=0x7f030001;
-        public static final int activity_selecttodo=0x7f030002;
+        public static final int item_selectactionbar=0x7f030002;
         public static final int item_todo=0x7f030003;
     }
     public static final class menu {

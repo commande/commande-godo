@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/select_action_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/bottom_action_bar_color"
+    tools:context="com.brettcommandeur.android.godo.MainActivity" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/archive_button"
+        android:clickable="true"
+        android:onClick="emailSelectedTodos"
+        android:padding="10dp"
+        android:text="@string/email_todos"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/archive_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/delete_button"
+        android:clickable="true"
+        android:onClick="archiveSelectedTodos"
+        android:padding="10dp"
+        android:text="@string/archive_todos"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:onClick="deleteSelectedTodos"
+        android:padding="10dp"
+        android:text="@string/delete_todos"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:clickable="true"
+        android:onClick="cancelSelect"
+        android:padding="10dp"
+        android:text="@string/cancel_select"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/all_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/cancel_button"
+        android:clickable="true"
+        android:onClick="selectAllTodos"
+        android:padding="10dp"
+        android:text="@string/select_all"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>

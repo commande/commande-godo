@@ -5,11 +5,12 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import ca.ualberta.commande.android.commande_godo.data.TodoItem;
 import ca.ualberta.commande.android.commande_godo.data.TodosDataSource;
 
@@ -18,9 +19,14 @@ public class MainActivity extends ListActivity {
 	
 	private static final int NEW_TODO_REQUEST_CODE = 100;
 	private static final int SELECT_TODO_REQUEST_CODE = 200;
+	
 	private static final int DISPLAY_ACTIVE = 1;
 	private static final int DISPLAY_ARCHIVED = 2;
 	private static final int DISPLAY_ALL = 3;
+	
+	private static final int SELECT_MODE_ON = 1;
+	private static final int SELECT_MODE_OFF = 0;
+	private static int SELECT_MODE = SELECT_MODE_OFF;
 	
 	private TodosDataSource datasource;
 	private TodoAdapter adapter;
@@ -94,8 +100,17 @@ public class MainActivity extends ListActivity {
 	}
     
     public void showSelectTodoActivity(View v) {
-    	Intent intent = new Intent (this, SelectTodoActivity.class);
-    	startActivityForResult(intent, SELECT_TODO_REQUEST_CODE);
+    	// change bottom action bar contents to show select options
+    	// http://stackoverflow.com/questions/3995215/add-and-remove-views-in-android-dynamically, Sept 15, 2014
+    	// http://stackoverflow.com/questions/3142067/android-set-style-in-code, Sept 15, 2014
+    	
+    	// add select-mode bar on top of bottom action bar
+    	RelativeLayout bottomActionBar = (RelativeLayout) findViewById(R.id.bottom_action_bar);
+    	RelativeLayout parentView = (RelativeLayout)bottomActionBar.getParent();
+    	getLayoutInflater().inflate(R.layout.item_selectactionbar, parentView);
+    	
+    	// Switch to select mode
+    	SELECT_MODE = SELECT_MODE_ON;
     }
     
     @Override
@@ -123,15 +138,41 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int pos, long id) {
     	super.onListItemClick(l, v, pos, id);
-    		// When user clicks a todo, toggle its completed status
+    	
+    	TodoItem updatedTodo = displayTodos.get(pos);
+    	
+    	switch (SELECT_MODE) {
+		case SELECT_MODE_ON:
+			updatedTodo.toggleSelected();
+			adapter.notifyDataSetChanged();
+			break;
+			
+		case SELECT_MODE_OFF:
+			// When user clicks a todo, toggle its completed status
     		// first get the todo that was clicked and toggle the completed status
-    		TodoItem updatedTodo = displayTodos.get(pos);
     		updatedTodo.toggleCompleted();
-    		
     		// save the changes on disk and memory
     		datasource.update(updatedTodo);
-    		
     		// update the view
     		adapter.notifyDataSetChanged();
+			break;
+			
+		default:
+			break;
+		}
+    		
+    }
+    
+    public void cancelSelect(View v) {
+    	RelativeLayout selectActionBar = (RelativeLayout) findViewById(R.id.select_action_bar);
+    	RelativeLayout parentView = (RelativeLayout)selectActionBar.getParent();
+    	parentView.removeView(selectActionBar);
+    	SELECT_MODE = SELECT_MODE_OFF;
+    	
+    	// clear the selections
+    	for (TodoItem todo : displayTodos) {
+			todo.setSelected(false);
+		}
+    	adapter.notifyDataSetChanged();
     }
 }
