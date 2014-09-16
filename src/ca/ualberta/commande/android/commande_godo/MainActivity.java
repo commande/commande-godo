@@ -99,20 +99,6 @@ public class MainActivity extends ListActivity {
 		startActivityForResult(intent, NEW_TODO_REQUEST_CODE);
 	}
     
-    public void showSelectTodoActivity(View v) {
-    	// change bottom action bar contents to show select options
-    	// http://stackoverflow.com/questions/3995215/add-and-remove-views-in-android-dynamically, Sept 15, 2014
-    	// http://stackoverflow.com/questions/3142067/android-set-style-in-code, Sept 15, 2014
-    	
-    	// add select-mode bar on top of bottom action bar
-    	RelativeLayout bottomActionBar = (RelativeLayout) findViewById(R.id.bottom_action_bar);
-    	RelativeLayout parentView = (RelativeLayout)bottomActionBar.getParent();
-    	getLayoutInflater().inflate(R.layout.item_selectactionbar, parentView);
-    	
-    	// Switch to select mode
-    	SELECT_MODE = SELECT_MODE_ON;
-    }
-    
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -134,6 +120,53 @@ public class MainActivity extends ListActivity {
 			adapter.notifyDataSetChanged();
 		}
 	}
+    
+    
+    public void showSelectTodoActivity(View v) {
+    	// change bottom action bar contents to show select options
+    	// http://stackoverflow.com/questions/3995215/add-and-remove-views-in-android-dynamically, Sept 15, 2014
+    	// http://stackoverflow.com/questions/3142067/android-set-style-in-code, Sept 15, 2014
+    	
+    	// add select-mode bar on top of bottom action bar
+    	RelativeLayout bottomActionBar = (RelativeLayout) findViewById(R.id.bottom_action_bar);
+    	RelativeLayout parentView = (RelativeLayout)bottomActionBar.getParent();
+    	getLayoutInflater().inflate(R.layout.item_selectactionbar, parentView);
+    	
+    	// Switch to select mode
+    	SELECT_MODE = SELECT_MODE_ON;
+    }
+    
+    public void selectAllTodos(View v) {
+    	for (TodoItem todo : displayTodos) {
+			todo.setSelected(true);
+		}
+    	adapter.notifyDataSetChanged();
+    }
+    
+    public void cancelSelect(View v) {
+    	RelativeLayout selectActionBar = (RelativeLayout) findViewById(R.id.select_action_bar);
+    	RelativeLayout parentView = (RelativeLayout)selectActionBar.getParent();
+    	parentView.removeView(selectActionBar);
+    	SELECT_MODE = SELECT_MODE_OFF;
+    	
+    	// clear the selections
+    	for (TodoItem todo : displayTodos) {
+			todo.setSelected(false);
+		}
+    	adapter.notifyDataSetChanged();
+    }
+    
+    public void archiveSelectedTodos(View v) {
+    	// for each todo shown, set its archived status then turn off select mode.
+    	for (TodoItem todo : displayTodos) {
+			if (todo.isSelected()) {
+				todo.setArchived(true);
+				datasource.update(todo);
+			}
+		}
+    	
+    	cancelSelect(v);
+    }
     
     @Override
     protected void onListItemClick(ListView l, View v, int pos, long id) {
@@ -161,18 +194,5 @@ public class MainActivity extends ListActivity {
 			break;
 		}
     		
-    }
-    
-    public void cancelSelect(View v) {
-    	RelativeLayout selectActionBar = (RelativeLayout) findViewById(R.id.select_action_bar);
-    	RelativeLayout parentView = (RelativeLayout)selectActionBar.getParent();
-    	parentView.removeView(selectActionBar);
-    	SELECT_MODE = SELECT_MODE_OFF;
-    	
-    	// clear the selections
-    	for (TodoItem todo : displayTodos) {
-			todo.setSelected(false);
-		}
-    	adapter.notifyDataSetChanged();
     }
 }

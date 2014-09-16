@@ -11,6 +11,7 @@
     <string name="new_todo_hint">Enter a title for your new todo...</string>
     <string name="email_todos">Email</string>
     <string name="archive_todos">Archive</string>
+    <string name="unarchive_todos">Unarchive</string>
     <string name="delete_todos">Delete</string>
     <string name="cancel_select">Cancel</string>
     <string name="select_all">All</string>
