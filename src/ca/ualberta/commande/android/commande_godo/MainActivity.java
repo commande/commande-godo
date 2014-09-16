@@ -1,6 +1,6 @@
 package ca.ualberta.commande.android.commande_godo;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -18,11 +18,10 @@ import ca.ualberta.commande.android.commande_godo.data.TodosDataSource;
 public class MainActivity extends ListActivity {
 	
 	private static final int NEW_TODO_REQUEST_CODE = 100;
-	private static final int SELECT_TODO_REQUEST_CODE = 200;
 	
 	private static final int DISPLAY_ACTIVE = 1;
 	private static final int DISPLAY_ARCHIVED = 2;
-	private static final int DISPLAY_ALL = 3;
+	private static int DISPLAY_MODE = DISPLAY_ACTIVE;
 	
 	private static final int SELECT_MODE_ON = 1;
 	private static final int SELECT_MODE_OFF = 0;
@@ -37,37 +36,60 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // get the todos from the datasource.
         datasource = new TodosDataSource(this);
         
-        //filter todos user is interested in seeing as selected from menu options
-        displayTodos = getDisplayTodos(DISPLAY_ALL);
-        
-        // Display the todos to the user
+        // set the adapter and display todos
+        displayActiveTodos();
+    }
+    
+    public void displayDisplayedTodos() {
+    	switch (DISPLAY_MODE) {
+		case DISPLAY_ACTIVE:
+			displayActiveTodos();
+			break;
+			
+		case DISPLAY_ARCHIVED:
+			displayArchivedTodos();
+			break;
+			
+		default:
+			break;
+		}
+    }
+    
+    public void displayActiveTodos() {
+    	displayTodos = getDisplayTodos(DISPLAY_ACTIVE);
 		adapter = new TodoAdapter(this, R.layout.item_todo, displayTodos);
 		setListAdapter(adapter);
-        
+		setTitle("GoDo - Inbox");
+    }
+    
+    public void displayArchivedTodos() {
+    	displayTodos = getDisplayTodos(DISPLAY_ARCHIVED);
+		adapter = new TodoAdapter(this, R.layout.item_todo, displayTodos);
+		setListAdapter(adapter);
+		setTitle("GoDo - Archive");
     }
     
     public List<TodoItem> getDisplayTodos(int displayMode) {
-    	List<TodoItem> displayTodos = null;
+    	List<TodoItem> newDisplayTodos = new ArrayList<TodoItem>();
     	
     	switch (displayMode) {
 		case DISPLAY_ACTIVE:
 			for (TodoItem todo : datasource.todos) {
 				if (!todo.isArchived()) {
-					displayTodos.add(todo);
+					newDisplayTodos.add(todo);
 				}
 			}
-			return displayTodos;
+			return newDisplayTodos;
 			
 		case DISPLAY_ARCHIVED:
 			for (TodoItem todo : datasource.todos) {
 				if (todo.isArchived()) {
-					displayTodos.add(todo);
+					newDisplayTodos.add(todo);
 				}
 			}
-			return displayTodos;
+			return newDisplayTodos;
 
 		default:
 			return datasource.todos;
@@ -88,8 +110,13 @@ public class MainActivity extends ListActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_displayarchived) {
+        	DISPLAY_MODE = DISPLAY_ARCHIVED;
+        	displayDisplayedTodos();
+        }
+        if (id == R.id.action_displayactive) {
+        	DISPLAY_MODE = DISPLAY_ACTIVE;
+        	displayDisplayedTodos();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -111,13 +138,11 @@ public class MainActivity extends ListActivity {
 			TodoItem newTodo = TodoItem.getNew(todoTitle);
 			
 			// Save new todo to disk and update the view
-			
 			datasource.todos.add(newTodo);
 			datasource.saveTodos();
 			
 			// Update the view
-			displayTodos = getDisplayTodos(DISPLAY_ALL);
-			adapter.notifyDataSetChanged();
+			displayActiveTodos();
 		}
 	}
     
@@ -130,7 +155,12 @@ public class MainActivity extends ListActivity {
     	// add select-mode bar on top of bottom action bar
     	RelativeLayout bottomActionBar = (RelativeLayout) findViewById(R.id.bottom_action_bar);
     	RelativeLayout parentView = (RelativeLayout)bottomActionBar.getParent();
-    	getLayoutInflater().inflate(R.layout.item_selectactionbar, parentView);
+    	
+    	if (DISPLAY_MODE == DISPLAY_ACTIVE) {
+    		getLayoutInflater().inflate(R.layout.item_selectactionbar, parentView);
+    	} else if (DISPLAY_MODE == DISPLAY_ARCHIVED) {
+    		getLayoutInflater().inflate(R.layout.item_selectactionbararchived, parentView);
+    	}
     	
     	// Switch to select mode
     	SELECT_MODE = SELECT_MODE_ON;
@@ -144,6 +174,8 @@ public class MainActivity extends ListActivity {
     }
     
     public void cancelSelect(View v) {
+    	
+    	// Remove the select action bar from the view and turn off select mode
     	RelativeLayout selectActionBar = (RelativeLayout) findViewById(R.id.select_action_bar);
     	RelativeLayout parentView = (RelativeLayout)selectActionBar.getParent();
     	parentView.removeView(selectActionBar);
@@ -153,7 +185,9 @@ public class MainActivity extends ListActivity {
     	for (TodoItem todo : displayTodos) {
 			todo.setSelected(false);
 		}
-    	adapter.notifyDataSetChanged();
+    	
+    	// update the view
+    	displayDisplayedTodos();
     }
     
     public void archiveSelectedTodos(View v) {
@@ -168,11 +202,24 @@ public class MainActivity extends ListActivity {
     	cancelSelect(v);
     }
     
+    public void unarchiveSelectedTodos(View v) {
+    	// for each todo shown, set its archived status then turn off select mode.
+    	for (TodoItem todo : displayTodos) {
+			if (todo.isSelected()) {
+				todo.setArchived(false);
+				datasource.update(todo);
+			}
+		}
+    	
+    	cancelSelect(v);
+    }
+    
     public void deleteSelectedTodos(View v) {
     	TodoItem todo;
     	for (int i = 0; i < displayTodos.size(); i++) {
 			todo = displayTodos.get(i);
 			if (todo.isSelected()) {
+				displayTodos.remove(todo);
 				datasource.remove(todo);
 				i--;
 			}
@@ -180,6 +227,7 @@ public class MainActivity extends ListActivity {
     	datasource.saveTodos();
     	cancelSelect(v);
     }
+   
     
     @Override
     protected void onListItemClick(ListView l, View v, int pos, long id) {
@@ -194,12 +242,9 @@ public class MainActivity extends ListActivity {
 			break;
 			
 		case SELECT_MODE_OFF:
-			// When user clicks a todo, toggle its completed status
-    		// first get the todo that was clicked and toggle the completed status
+			// When user clicks a todo, toggle its completed status and update the view
     		updatedTodo.toggleCompleted();
-    		// save the changes on disk and memory
     		datasource.update(updatedTodo);
-    		// update the view
     		adapter.notifyDataSetChanged();
 			break;
 			
