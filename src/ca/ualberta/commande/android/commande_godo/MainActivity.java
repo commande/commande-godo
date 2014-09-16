@@ -1,5 +1,6 @@
 package ca.ualberta.commande.android.commande_godo;
 
+import java.util.Iterator;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -10,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import ca.ualberta.commande.android.commande_godo.data.TodoItem;
 import ca.ualberta.commande.android.commande_godo.data.TodosDataSource;
 
@@ -165,6 +165,19 @@ public class MainActivity extends ListActivity {
 			}
 		}
     	
+    	cancelSelect(v);
+    }
+    
+    public void deleteSelectedTodos(View v) {
+    	TodoItem todo;
+    	for (int i = 0; i < displayTodos.size(); i++) {
+			todo = displayTodos.get(i);
+			if (todo.isSelected()) {
+				datasource.todos.remove(todo);
+				i--;
+			}
+		}
+    	datasource.saveTodos();
     	cancelSelect(v);
     }
     
