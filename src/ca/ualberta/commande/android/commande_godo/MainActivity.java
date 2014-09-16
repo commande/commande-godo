@@ -173,7 +173,7 @@ public class MainActivity extends ListActivity {
     	for (int i = 0; i < displayTodos.size(); i++) {
 			todo = displayTodos.get(i);
 			if (todo.isSelected()) {
-				datasource.todos.remove(todo);
+				datasource.remove(todo);
 				i--;
 			}
 		}
