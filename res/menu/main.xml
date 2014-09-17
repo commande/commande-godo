@@ -11,5 +11,16 @@
         android:orderInCategory="101"
         android:showAsAction="never"
         android:title="@string/action_displayarchived"/>
+    <item
+        android:id="@+id/action_emailall"
+        android:orderInCategory="102"
+        android:showAsAction="never"
+        android:title="@string/email_all"/>
+    <item
+        android:id="@+id/action_summary"
+        android:orderInCategory="103"
+        android:showAsAction="never"
+        android:title="@string/summary"/>
 
+    
 </menu>

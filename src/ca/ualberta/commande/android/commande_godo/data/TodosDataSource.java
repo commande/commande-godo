@@ -81,4 +81,56 @@ public class TodosDataSource {
 		return true;
 	}
 	
+	public int getStat(String statCode) {
+		
+		int count = 0;
+		
+		if (statCode.equals("tic")) {
+			for (TodoItem todo : todos) {
+				if (todo.isCompleted()) {
+					count ++;
+				}
+			}
+			return count;
+		} 
+		
+		if (statCode.equals("tiu")) {
+			for (TodoItem todo : todos) {
+				if (!todo.isCompleted()) {
+					count ++;
+				}
+			}
+			return count;
+		} 
+
+		if (statCode.equals("tia")) {
+			for (TodoItem todo : todos) {
+				if (todo.isArchived()) {
+					count ++;
+				}
+			}
+			return count;
+		} 
+
+		if (statCode.equals("aic")) {
+			for (TodoItem todo : todos) {
+				if (todo.isCompleted() && todo.isArchived()) {
+					count ++;
+				}
+			}
+			return count;
+		} 
+
+		if (statCode.equals("aiu")) {
+			for (TodoItem todo : todos) {
+				if (!todo.isCompleted() && todo.isArchived()) {
+					count ++;
+				}
+			}
+			return count;
+		} 
+		
+		return -1;
+	}
+	
 }

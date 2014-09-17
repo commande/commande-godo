@@ -17,5 +17,7 @@
     <string name="select_all">All</string>
     <string name="action_displayactive">Inbox</string>
     <string name="action_displayarchived">Archive</string>
+    <string name="email_all">Email All Todos...</string>
+    <string name="summary">Summary</string>
 
 </resources>
