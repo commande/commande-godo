@@ -30,7 +30,8 @@ public class MainActivity extends ListActivity {
 	private TodosDataSource datasource;
 	private TodoAdapter adapter;
 	private List<TodoItem> displayTodos;
-
+	
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,7 @@ public class MainActivity extends ListActivity {
         
         // set the adapter and display todos
         displayActiveTodos();
+        
     }
     
     public void displayDisplayedTodos() {
