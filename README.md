@@ -20,3 +20,8 @@ Due to the minimalistic nature of the application, some required functions may b
 Known Issues
 ------------
 - Changing views between archive and inbox while in select mode does not turn off select mode, select mode bar persists but does nothing. User must click cancel then re-enable select mode to select multiple todos.
+
+Work To Be Done
+---------------
+- Add notes the UML to describe the main responsibilities of the classes.
+- Each class must contain comments describing its purpose, design rationale, and any outstanding issues.
