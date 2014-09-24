@@ -19,4 +19,4 @@ Due to the minimalistic nature of the application, some required functions may b
 
 Known Issues
 ------------
-- Changing views between archive and inbox while in select mode does not turn off select mode, select mode bar persists but does nothing. User must click cancel then re-enable select mode to use select mode.
+- Changing views between archive and inbox while in select mode does not turn off select mode, select mode bar persists but does nothing. User must click cancel then re-enable select mode to select multiple todos.
