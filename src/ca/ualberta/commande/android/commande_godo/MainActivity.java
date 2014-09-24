@@ -207,12 +207,10 @@ public class MainActivity extends ListActivity {
 		parentView.removeView(selectActionBar);
 		selectMode = SELECT_MODE_OFF;
 
-		// clear the selections
+		// clear the selections and update the view
 		for (TodoItem todo : displayTodos) {
 			todo.setSelected(false);
 		}
-
-		// update the view
 		displayDisplayedTodos();
 	}
 
@@ -238,21 +236,18 @@ public class MainActivity extends ListActivity {
 				datasource.update(todo);
 			}
 		}
-
 		cancelSelect(v);
 	}
 
 	public void deleteSelectedTodos(View v) {
 		TodoItem todo;
-		for (int i = 0; i < displayTodos.size(); i++) {
+		int s = displayTodos.size();
+		for (int i = 0; i < s; i++) {
 			todo = displayTodos.get(i);
 			if (todo.isSelected()) {
-				displayTodos.remove(todo);
 				datasource.remove(todo);
-				i--;
 			}
 		}
-		datasource.saveTodos();
 		cancelSelect(v);
 	}
 	

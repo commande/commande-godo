@@ -59,6 +59,7 @@ public class TodosDataSource {
 	
 	public boolean remove(TodoItem todo) {
 		this.todos.remove(todo);
+		this.saveTodos();
 		return true;
 	}
 	
