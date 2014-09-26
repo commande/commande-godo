@@ -1,7 +1,11 @@
 commande-godo
 =============
-Name of Application: commande-godo
-Name of Author: Brett Commandeur
+Application: commande-godo
+
+Author: Brett Commandeur
+
+CCID: commande
+
 Description: A simple todo-list application for Assignment 1 of CMPUT 301 Fall 2014
 
 External Sources
