@@ -1,6 +1,8 @@
 commande-godo
 =============
-A simple todo-list application for Assignment 1 of CMPUT 301 Fall 2014
+Name of Application: commande-godo
+Name of Author: Brett Commandeur
+Description: A simple todo-list application for Assignment 1 of CMPUT 301 Fall 2014
 
 External Sources
 ----------------
