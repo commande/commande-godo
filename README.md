@@ -12,6 +12,25 @@ External Sources
 ----------------
 This application makes no use of third party libraries. The application references or modifies code strictly from sources made available for learning, tutorial and troubleshooting purposes. In particular, this application references code from lynda.com, devtut.wordpress.com, developer.android.com, and stackoverflow.com. External sources of code are annotated via comment with their source URL and date cited.
 
+Tutorials Referenced:
+
+Android SDK Essential Training by David Gassner
+
+http://www.lynda.com/Android-tutorials/Android-SDK-Essential-Training/143102-2.html
+
+Building a Note-Taking App for Android by David Gassner
+
+http://www.lynda.com/Android-tutorials/Building-Note-Taking-App-Android/122466-2.html
+
+Android SDK: Local Data Storage by David Gassner
+
+http://www.lynda.com/Android-tutorials/Android-SDK-Local-Data-Storage/112584-2.html
+
+Custom ArrayAdapter for a ListView (Android) by doctororeo
+
+http://devtut.wordpress.com/2011/06/09/custom-arrayadapter-for-a-listview-android/
+
+
 How to Use the App
 ------------------
 Due to the minimalistic nature of the application, some required functions may be non-obvious at first. Below is a list of actions needed to perform the required functionality. 

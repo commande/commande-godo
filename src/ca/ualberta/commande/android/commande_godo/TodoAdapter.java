@@ -1,5 +1,6 @@
 /*** 
  * Constructor method, objects declaration and getView method structure modified from:
+ * Username: doctororeo
  * http://devtut.wordpress.com/2011/06/09/custom-arrayadapter-for-a-listview-android/
  * Sept 13, 2014
  */

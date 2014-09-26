@@ -59,6 +59,9 @@ public class MainActivity extends ListActivity {
 	public void displayActiveTodos() {
 		displayMode = DISPLAY_ACTIVE;
 		displayTodos = getDisplayTodos(displayMode);
+		
+		// API referenced from 
+		// http://developer.android.com/reference/android/app/ListActivity.html
 		adapter = new TodoAdapter(this, R.layout.item_todo, displayTodos);
 		setListAdapter(adapter);
 		setTitle("GoDo - Inbox");
@@ -67,6 +70,9 @@ public class MainActivity extends ListActivity {
 	public void displayArchivedTodos() {
 		displayMode = DISPLAY_ARCHIVED;
 		displayTodos = getDisplayTodos(displayMode);
+		
+		// API referenced from 
+		// http://developer.android.com/reference/android/app/ListActivity.html
 		adapter = new TodoAdapter(this, R.layout.item_todo, displayTodos);
 		setListAdapter(adapter);
 		setTitle("GoDo - Archive");
@@ -121,9 +127,13 @@ public class MainActivity extends ListActivity {
 			displayDisplayedTodos();
 			selectMode = SELECT_MODE_OFF;
 		}
-		if (id == R.id.action_emailall) {
-			// http://stackoverflow.com/questions/8701634/send-email-intent Sept 17, 2014
+		if (id == R.id.action_emailall) { 
 			selectMode = SELECT_MODE_OFF;
+
+			//Next 4 lines referenced from user doraemon
+			//http://stackoverflow.com/questions/8701634/send-email-intent
+			//Sept 17, 2014
+ 
 			Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
 		            "mailto","", null));
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, TodoEmailer.generateSubject(datasource.todos));
@@ -143,6 +153,10 @@ public class MainActivity extends ListActivity {
 	}
 
 	public void showNewTodoActivity(View v) {
+		// Method of starting and returning from secondary activity
+		// referenced from tutorial by David Gassner
+		// http://www.lynda.com/Android-tutorials/Finishing-returning-from-secondary-activity/143102/158809-4.html
+		// Sept 15, 2014
 		Intent intent = new Intent(this, NewTodoActivity.class);
 		startActivityForResult(intent, NEW_TODO_REQUEST_CODE);
 	}
@@ -170,17 +184,19 @@ public class MainActivity extends ListActivity {
 
 	public void showSelectTodoActivity(View v) {
 		// change bottom action bar contents to show select options
+		
+		// add select-mode bar on top of bottom action bar
+		// Next 2 lines referenced from user Thomas Ahle
 		// http://stackoverflow.com/questions/3995215/add-and-remove-views-in-android-dynamically,
 		// Sept 15, 2014
-		// http://stackoverflow.com/questions/3142067/android-set-style-in-code,
-		// Sept 15, 2014
-
-		// add select-mode bar on top of bottom action bar
 		RelativeLayout bottomActionBar = (RelativeLayout) findViewById(R.id.bottom_action_bar);
 		RelativeLayout parentView = (RelativeLayout) bottomActionBar
 				.getParent();
 
 		if (displayMode == DISPLAY_ACTIVE) {
+			// Next line referenced fom user dan k
+			// http://stackoverflow.com/questions/3142067/android-set-style-in-code,
+			// Sept 15, 2014
 			getLayoutInflater().inflate(R.layout.item_selectactionbar,
 					parentView);
 		} else if (displayMode == DISPLAY_ARCHIVED) {
@@ -202,6 +218,9 @@ public class MainActivity extends ListActivity {
 	public void cancelSelect(View v) {
 
 		// Remove the select action bar from the view and turn off select mode
+		// Next 3 lines of API referenced fom user dan k
+		// http://stackoverflow.com/questions/3142067/android-set-style-in-code,
+		// Sept 15, 2014
 		RelativeLayout selectActionBar = (RelativeLayout) findViewById(R.id.select_action_bar);
 		RelativeLayout parentView = (RelativeLayout) selectActionBar.getParent();
 		parentView.removeView(selectActionBar);
@@ -252,8 +271,7 @@ public class MainActivity extends ListActivity {
 	}
 	
 	public void emailSelectedTodos(View v) {
-		// http://stackoverflow.com/questions/8701634/send-email-intent Sept 17, 2014
-		
+
 		List<TodoItem> emailTodos = new ArrayList<TodoItem>();
 		for (TodoItem todo : displayTodos) {
 			if (todo.isSelected()) {
@@ -261,6 +279,10 @@ public class MainActivity extends ListActivity {
 			}
 		}
 		
+		
+		//Next 4 lines referenced from user doraemon
+		//http://stackoverflow.com/questions/8701634/send-email-intent
+		//Sept 17, 2014
 		Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
 	            "mailto","", null));
 		emailIntent.putExtra(Intent.EXTRA_SUBJECT, TodoEmailer.generateSubject(emailTodos));
